@@ -1,0 +1,21 @@
+# agnix lint config — dominikwozniak-skills is a Claude Code skills marketplace.
+# Docs: https://agent-sh.github.io/agnix/docs/configuration
+target = "ClaudeCode"
+severity = "Warning"
+
+exclude = [
+    "node_modules/**",
+    ".git/**",
+    # Local agent state dropped by claude-kit bootstrap (gitignored). Not part of
+    # the marketplace surface — exclude so agnix doesn't lint the local drops.
+    ".agent/**",
+    ".claude/**",
+]
+
+[rules]
+skills = true
+hooks = true
+plugins = true
+mcp = true
+frontmatter_validation = true
+import_references = true

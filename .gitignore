@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Node / pnpm (CI tooling: agnix, prettier)
+node_modules/
+
+# Local agent state (this repo dogfoods claude-kit bootstrap — all local/gitignored)
+/.agent/
+/CLAUDE.local.md
+/.claude/settings.local.json
+/.claude/hooks/

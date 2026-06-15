@@ -1,0 +1,9 @@
+{
+  "name": "example-skill",
+  "version": "0.1.0",
+  "description": "Placeholder skill and copy-me template. Duplicate this plugin and the canonical skill to add a real skill to the marketplace.",
+  "author": {
+    "name": "Dominik Wozniak"
+  },
+  "skills": "./skills"
+}

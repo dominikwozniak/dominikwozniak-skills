@@ -1,0 +1,20 @@
+{
+  "name": "dominikwozniak-skills",
+  "owner": {
+    "name": "Dominik Wozniak"
+  },
+  "metadata": {
+    "description": "A personal bucket of Claude Code skills I actually use or share. Install from the marketplace and pick what you need.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "example-skill",
+      "version": "0.1.0",
+      "source": "./plugins/example-skill",
+      "keywords": ["example", "template", "starter"],
+      "category": "utilities",
+      "tags": ["template"]
+    }
+  ]
+}

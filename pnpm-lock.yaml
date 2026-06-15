@@ -1,0 +1,36 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      agnix:
+        specifier: ^0.22.0
+        version: 0.22.1
+      prettier:
+        specifier: ^3.4.0
+        version: 3.8.4
+
+packages:
+
+  agnix@0.22.1:
+    resolution: {integrity: sha512-kIym+bDCf/BHVdxJvB5QKicg4y7qkhIq973sjX4fPiGgHe3vGiJC53gs8qz+mkSe0FjRSLzBHhMG7HIx2ceT8w==}
+    engines: {node: '>=16.0.0'}
+    cpu: [x64, arm64]
+    os: [darwin, linux, win32]
+    hasBin: true
+
+  prettier@3.8.4:
+    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+snapshots:
+
+  agnix@0.22.1: {}
+
+  prettier@3.8.4: {}
