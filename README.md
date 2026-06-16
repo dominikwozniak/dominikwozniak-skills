@@ -18,7 +18,9 @@ claude plugin install dw-misc
 ## 🧩 Skills
 
 - **`dw-spec`** (plugin `dw-planning`) — write a persistent feature spec to `.ai/runs/` with an Open-Questions hard gate before planning or coding.
+- **`dw-resume`** (plugin `dw-planning`) — read-only: reconstruct where work stands from the active `.ai/runs/` run (branch-matched) and report the first not-done step — your resume point after a `/clear`.
 - **`dw-handoff`** (plugin `dw-misc`) — compact the session into a handoff doc at `.ai/handoffs/` for the next agent.
+- **`dw-explain`** (plugin `dw-quality`) — explain what a change does and generate runnable, code-grounded verification scenarios in `.ai/verify/`, ready for `dw-verify` to run.
 
 ## 🤝 Contributing
 
