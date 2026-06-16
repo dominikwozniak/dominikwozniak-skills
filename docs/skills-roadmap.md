@@ -160,7 +160,7 @@ Po wbudowaniu Fazy 0 launch reszty skraca się do: **„zbuduj następny niezbud
 | `dw-spec`    | `dw-planning` | ✅ done         |
 | `dw-resume`  | `dw-planning` | ✅ done         |
 | `dw-plan`    | `dw-planning` | ✅ done         |
-| `dw-build`   | `dw-planning` | ⬜ todo         |
+| `dw-build`   | `dw-planning` | ✅ done         |
 | `dw-explain` | `dw-quality`  | ✅ done         |
 | `dw-verify`  | `dw-quality`  | ✅ done         |
 | `dw-risk`    | `dw-quality`  | ⬜ todo         |

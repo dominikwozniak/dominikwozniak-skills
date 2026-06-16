@@ -20,6 +20,7 @@ claude plugin install dw-misc
 - **`dw-spec`** (plugin `dw-planning`) — write a persistent feature spec to `.ai/runs/` with an Open-Questions hard gate before planning or coding.
 - **`dw-resume`** (plugin `dw-planning`) — read-only: reconstruct where work stands from the active `.ai/runs/` run (branch-matched) and report the first not-done step — your resume point after a `/clear`.
 - **`dw-plan`** (plugin `dw-planning`) — turn the active run's ready `SPEC.md` into a persistent `PLAN.md` status table of thin vertical slices (acceptance + verify per step), gated on your approval before writing — the anchor `dw-resume` and `dw-build` read.
+- **`dw-build`** (plugin `dw-planning`) — build the active run's `PLAN.md` one step at a time: take the first not-done row, run RED → GREEN → regression → commit, then flip it to `done` + short SHA and append `NOTES.md`. Reads test/lint/run commands and `## Git conventions` from the project; `auto` builds the whole plan.
 - **`dw-handoff`** (plugin `dw-misc`) — compact the session into a handoff doc at `.ai/handoffs/` for the next agent.
 - **`dw-explain`** (plugin `dw-quality`) — explain what a change does and generate runnable, code-grounded verification scenarios in `.ai/verify/`, ready for `dw-verify` to run.
 - **`dw-verify`** (plugin `dw-quality`) — run the verification scenarios from `explain.md` and record PASS/FAIL/INCONCLUSIVE + evidence to `.ai/verify/`.

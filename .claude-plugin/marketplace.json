@@ -18,7 +18,7 @@
     },
     {
       "name": "dw-planning",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "source": "./plugins/dw-planning",
       "keywords": ["spec", "plan", "planning", "requirements", "workflow"],
       "category": "workflow",
