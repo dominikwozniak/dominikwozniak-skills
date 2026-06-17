@@ -9,16 +9,16 @@ importers:
   .:
     devDependencies:
       agnix:
-        specifier: ^0.22.0
-        version: 0.22.1
+        specifier: ^0.33.1
+        version: 0.33.1
       prettier:
         specifier: ^3.4.0
         version: 3.8.4
 
 packages:
 
-  agnix@0.22.1:
-    resolution: {integrity: sha512-kIym+bDCf/BHVdxJvB5QKicg4y7qkhIq973sjX4fPiGgHe3vGiJC53gs8qz+mkSe0FjRSLzBHhMG7HIx2ceT8w==}
+  agnix@0.33.1:
+    resolution: {integrity: sha512-YwZBV1am7nceyLQQYU7uGh+DhwDBJ1ZkN6edFv6hUoHOFTFcMtWVjXdPUibeXFFZ1A89r9AQIaGGZx/b6snTbA==}
     engines: {node: '>=16.0.0'}
     cpu: [x64, arm64]
     os: [darwin, linux, win32]
@@ -31,6 +31,6 @@ packages:
 
 snapshots:
 
-  agnix@0.22.1: {}
+  agnix@0.33.1: {}
 
   prettier@3.8.4: {}
