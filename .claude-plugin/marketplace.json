@@ -26,11 +26,11 @@
     },
     {
       "name": "dw-quality",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "source": "./plugins/dw-quality",
       "keywords": ["explain", "verify", "review", "quality", "diff"],
       "category": "quality",
-      "tags": ["explain", "verify"]
+      "tags": ["explain", "verify", "review"]
     }
   ]
 }

@@ -164,7 +164,7 @@ Po wbudowaniu Fazy 0 launch reszty skraca się do: **„zbuduj następny niezbud
 | `dw-explain` | `dw-quality`  | ✅ done         |
 | `dw-verify`  | `dw-quality`  | ✅ done         |
 | `dw-risk`    | `dw-quality`  | ✅ done         |
-| `dw-review`  | `dw-quality`  | ⬜ todo         |
+| `dw-review`  | `dw-quality`  | ✅ done         |
 | `dw-conform` | `dw-quality`  | ⬜ todo         |
 | `dw-prune`   | `dw-quality`  | ⬜ todo         |
 | `dw-sync`    | `dw-planning` | ⬜ todo         |

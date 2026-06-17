@@ -22,6 +22,7 @@ claude plugin install dw-misc
 - **`dw-plan`** (plugin `dw-planning`) — turn the active run's ready `SPEC.md` into a persistent `PLAN.md` status table of thin vertical slices (acceptance + verify per step), gated on your approval before writing — the anchor `dw-resume` and `dw-build` read.
 - **`dw-build`** (plugin `dw-planning`) — build the active run's `PLAN.md` one step at a time: take the first not-done row, run RED → GREEN → regression → commit, then flip it to `done` + short SHA and append `NOTES.md`. Reads test/lint/run commands and `## Git conventions` from the project; `auto` builds the whole plan.
 - **`dw-handoff`** (plugin `dw-misc`) — compact the session into a handoff doc at `.ai/handoffs/` for the next agent.
+- **`dw-review`** (plugin `dw-quality`) — multi-axis review (correctness, readability, architecture, security, performance) of a change's diff, with findings as `file:line` + severity and an overall verdict, written to `.ai/verify/`.
 - **`dw-explain`** (plugin `dw-quality`) — explain what a change does and generate runnable, code-grounded verification scenarios in `.ai/verify/`, ready for `dw-verify` to run.
 - **`dw-verify`** (plugin `dw-quality`) — run the verification scenarios from `explain.md` and record PASS/FAIL/INCONCLUSIVE + evidence to `.ai/verify/`.
 - **`dw-risk`** (plugin `dw-quality`) — assess a change's blast radius, out-of-code impact (migrations/env/flags/infra/secrets), and follow-ups/rollback to `.ai/verify/`.
