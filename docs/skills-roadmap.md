@@ -167,6 +167,6 @@ Po wbudowaniu Fazy 0 launch reszty skraca się do: **„zbuduj następny niezbud
 | `dw-review`  | `dw-quality`  | ✅ done         |
 | `dw-conform` | `dw-quality`  | ✅ done         |
 | `dw-prune`   | `dw-quality`  | ✅ done         |
-| `dw-sync`    | `dw-planning` | ⬜ todo         |
+| `dw-sync`    | `dw-planning` | ✅ done         |
 
 > Każda sesja po zbudowaniu skilla flipuje swój wiersz na ✅ (jedyna edycja tego doku, jaką robi sesja budująca).
