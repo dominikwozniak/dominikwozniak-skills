@@ -32,10 +32,13 @@ memory, that's a tracked `CLAUDE.md` distinct from your personal
 | `block-dangerous-git` | always                          | stack-agnostic; blocks force-push, hard-reset, `clean -f`, `branch -D`, `checkout .`, `restore .`           |
 | `block-non-pnpm`      | JS/TS (a `package.json` exists) | blocks `npm`/`yarn`/`bun`; allows `pnpm`, `pnpm dlx`, `npx`                                                 |
 | `lint-on-edit`        | JS/TS                           | reads the **Lint command** from `CLAUDE.local.md`; falls back to eslint; skips silently if neither resolves |
+| `typecheck-on-stop`   | TS (a `tsconfig.json` exists)   | Stop hook; reads **Typecheck command**; falls back to `tsc --noEmit`; skip with `CLAUDE_SKIP_TYPECHECK=1`   |
+| `lint-on-edit-rb`     | Ruby (a `Gemfile` exists)       | lints edited `.rb`; reads **Lint command**, else Gemfile-detects `standardrb`/`rubocop`                     |
 
-For Ruby / Rust / Python / Go: wire `block-dangerous-git` and tell the user the
-lint/typecheck hooks are JS/TS-specific. If they want a stack-equivalent lint hook
-(e.g. `bundle exec standardrb` on save), write a sibling script by the same
+`lint-on-edit` (`.ts`/`.js`) and `lint-on-edit-rb` (`.rb`) gate on file extension,
+so they're complementary — install the one(s) matching the stack. For Rust /
+Python / Go there's no shipped lint/typecheck hook yet: wire `block-dangerous-git`
+and, if the user wants a stack-equivalent, write a sibling script by the same
 shape — read stdin JSON, gate on the file extension, `exit 2` on failure — but
 don't ship one speculatively.
 

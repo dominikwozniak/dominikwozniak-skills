@@ -31,7 +31,7 @@ Context for the agent. Read before starting a task. _(dw-bootstrap fills this in
 
 ## Git conventions
 
-Read by the `git-workflow` skill. Overrides global defaults.
+Read by the `dw-git` skill. Overrides global defaults.
 
 - **Commit format**: `[TICKET-XXX] type: description` if the branch encodes a ticket, else
   `type: description` — [Conventional Commits 1.0](https://www.conventionalcommits.org/en/v1.0.0/).
@@ -66,7 +66,7 @@ This file is the source of truth for the agent _and_ the hooks. If any of these 
 matching line here in the same commit:
 
 - Test / lint / typecheck command → `## Project specifics` (the hooks read those names).
-- Default branch renamed → `## Git conventions` (`git-workflow` reads it).
+- Default branch renamed → `## Git conventions` (`dw-git` reads it).
 - Stack, key directories, deployment target shifts → `## Project specifics`.
 - New tool installed (MCP server, CLI) or one removed → `## Tools active in this session`.
 - New hook wired in `.claude/settings.json` → add a line under `## Hooks installed`.

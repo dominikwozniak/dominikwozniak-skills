@@ -72,8 +72,9 @@ there first (step 1) and present a diff before writing (step 4).
 - Features to write (default all): `.ai/` memory · `settings.json` + hooks ·
   `CLAUDE.local.md` · `.gitignore` block.
 - Hooks, filtered by detected stack: `block-dangerous-git` (always),
-  `block-non-pnpm` (JS/TS only), `lint-on-edit` (JS/TS only). On other stacks,
-  offer `block-dangerous-git` alone and note that lint hooks are stack-specific.
+  `block-non-pnpm` + `lint-on-edit` + `typecheck-on-stop` (JS/TS), `lint-on-edit-rb`
+  (Ruby). On stacks with no lint/typecheck hook, offer `block-dangerous-git` alone
+  and note the rest are stack-specific (see `references/bootstrap.md` → _Stack → hooks_).
 
 ### 3. (Mode B only) Interview — fill the prose
 
@@ -92,7 +93,8 @@ a wrong clobber is expensive. Do not write before the user confirms.
 
 - `mkdir -p .ai/{runs,handoffs,verify}` and seed each with `.gitkeep`.
 - Copy `references/templates/settings.json` → `.claude/settings.json`; **prune**
-  the hook entries the user didn't select.
+  the hook entries the user didn't select, then confirm the file still parses as
+  valid JSON.
 - Copy the selected `references/templates/hooks/*.sh` → `.claude/hooks/` and
   `chmod +x` each.
 - Render `references/templates/CLAUDE.local.md` → `CLAUDE.local.md`: substitute
@@ -122,8 +124,8 @@ List what was written and which paths to `git add` (the tracked ones). Confirm t
 hooks are wired by pointing at `.claude/settings.json`. Then point the user at the
 loop.
 
-**Next:** `dw-spec` to open the first run for a feature, or `git-workflow` to
-commit the scaffold.
+**Next:** `dw-spec` to open the first run for a feature, or `dw-git` to commit the
+scaffold.
 
 ## Templates
 
@@ -132,7 +134,8 @@ commit the scaffold.
 - `CLAUDE.local.md` — the personal-memory template (placeholders + prompts).
 - `settings.json` — tracked permissions + hooks (prune unselected hooks).
 - `gitignore-block.txt` — the marker-fenced managed block.
-- `hooks/block-dangerous-git.sh` · `hooks/block-non-pnpm.sh` · `hooks/lint-on-edit.sh`.
+- `hooks/block-dangerous-git.sh` · `hooks/block-non-pnpm.sh` · `hooks/lint-on-edit.sh` ·
+  `hooks/lint-on-edit-rb.sh` · `hooks/typecheck-on-stop.sh`.
 
 ## References
 
