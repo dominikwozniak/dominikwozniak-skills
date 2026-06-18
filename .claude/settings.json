@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "ask": [
+      "Bash(rm *)",
+      "Bash(rm -*)",
+      "Bash(sudo *)",
+      "Bash(gh repo delete *)",
+      "Bash(gh pr close *)",
+      "Bash(gh issue close *)",
+      "Bash(gh release delete *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block-dangerous-git.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/block-non-pnpm.sh\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/lint-on-edit.sh\"",
+            "timeout": 30,
+            "statusMessage": "Linting changed file..."
+          }
+        ]
+      }
+    ]
+  }
+}

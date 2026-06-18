@@ -1,21 +1,32 @@
-# macOS
-.DS_Store
-
-# Editor
-.vscode/
-.idea/
-*.swp
+# --- Repo-specific (outside the dw-bootstrap managed block; survives re-runs) ---
 
 # Node / pnpm (CI tooling: agnix, prettier)
 node_modules/
 
-# Local agent state (all local / gitignored)
-/.agent/
+# Scratch & personal notes (never published)
+/tmp-*.md
+/*.local.md
+/research.md
+
+# Vendored external dev tool (improve skill) + worktree scratch — personal, not this repo's product
+/.agents/
+/.claude/skills/
+/.claude/worktrees/
+/skills-lock.json
+
+# >>> dw-bootstrap managed block >>>
+# Personal agent memory & local overrides — never committed.
 /CLAUDE.local.md
 /.claude/settings.local.json
-/.claude/hooks/
 
-# Editor vault / scratch (never published)
+# Editor / OS scratch.
+.DS_Store
+*.swp
+.vscode/
+.idea/
 .obsidian/
-/research.md
-/tmp-*.md
+
+# NOTE: `.ai/`, `.claude/settings.json`, and `.claude/hooks/` are TRACKED on
+# purpose — dw-* treats agent infra (specs, plans, handoffs, guardrails) as
+# shared, committed work. Do NOT add them here.
+# <<< dw-bootstrap managed block <<<
