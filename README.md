@@ -64,6 +64,7 @@ never auto-fires).
 | -------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------- |
 | **Setup**                                          |                                                                                                    |                                                     |                                        |
 | [`dw-bootstrap`](skills/dw-bootstrap/SKILL.md) `⭑` | Scaffold a repo for the dw-\* loop: `.ai/`, tracked settings + hooks, `CLAUDE.local.md`, gitignore | "set up this project", "bootstrap claude"           | tracked `.ai/` + `.claude/` scaffold   |
+| [`dw-doctor`](skills/dw-doctor/SKILL.md)           | Diagnose the env a dw-\* repo assumes — tools, hooks, `.ai/` sanity; report fixes (read-only)      | "check my setup", "why aren't my hooks running"     | read-only health report + fixes        |
 | **Spec & plan**                                    |                                                                                                    |                                                     |                                        |
 | [`dw-spec`](skills/dw-spec/SKILL.md)               | Start a feature; surface unknowns via an open-questions gate                                       | "spec this out", "write a spec"                     | `SPEC.md` under `.ai/runs/`            |
 | [`dw-resume`](skills/dw-resume/SKILL.md)           | Pick up after a `/clear`; find the first not-done step                                             | "where were we", "resume"                           | read-only status report                |
@@ -93,9 +94,10 @@ closes the pipeline.
   spec→plan→build loop; artifacts under `.ai/runs/<id>/`.
 - **`dw-quality`** — `dw-review` · `dw-conform` · `dw-prune` · `dw-explain` · `dw-verify` ·
   `dw-risk`. A change-quality pipeline writing to `.ai/verify/<branch-slug>/`.
-- **`dw-misc`** — `dw-bootstrap` · `dw-git` · `dw-handoff`, plus a bucket for future cross-cutting
-  helpers. `dw-bootstrap` scaffolds a repo for this whole loop (tracked `.ai/` + `.claude/`); `dw-git`
-  runs git ops by your `CLAUDE.local.md` conventions.
+- **`dw-misc`** — `dw-bootstrap` · `dw-git` · `dw-handoff` · `dw-doctor`, plus a bucket for future
+  cross-cutting helpers. `dw-bootstrap` scaffolds a repo for this whole loop (tracked `.ai/` +
+  `.claude/`); `dw-git` runs git ops by your `CLAUDE.local.md` conventions; `dw-doctor` is a read-only
+  check that the tools and hooks the loop assumes are actually present.
 
 ## 🛠️ How it works
 

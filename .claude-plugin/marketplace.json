@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "dw-misc",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "source": "./plugins/dw-misc",
       "keywords": [
         "bootstrap",
@@ -23,10 +23,14 @@
         "handoff",
         "session",
         "context",
-        "workflow"
+        "workflow",
+        "doctor",
+        "diagnose",
+        "health",
+        "env"
       ],
       "category": "utilities",
-      "tags": ["bootstrap", "git", "handoff", "session"]
+      "tags": ["bootstrap", "git", "handoff", "session", "doctor"]
     },
     {
       "name": "dw-planning",
