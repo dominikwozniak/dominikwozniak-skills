@@ -71,3 +71,6 @@ These hold across every skill, regardless of section layout:
 - **Technology-agnostic.** No hardcoded stack. Read test/lint/run commands from the project
   (`## Commands` block → manifests → code). Stack-specific detail lives in `references/`, marked as
   examples. Full rationale in [`DESIGN.md`](DESIGN.md).
+- **One job, not one persona.** A skill is a unit of work (review a change, prove it runs), not a
+  role. `dw-review` weighs all five axes in one skill rather than splitting into persona skills — see
+  [`DESIGN.md`](DESIGN.md), "Loops vs persistence."

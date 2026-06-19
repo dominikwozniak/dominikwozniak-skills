@@ -1,6 +1,6 @@
 {
   "name": "dw-misc",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Cross-cutting workflow helpers that don't fit dw-planning or dw-quality. Skills: dw-bootstrap (scaffold a repo for the dw-* loop), dw-git (all git ops by project conventions), dw-handoff (session handoff into .ai/handoffs/), dw-doctor (read-only env diagnostic).",
   "author": {
     "name": "Dominik Wozniak"

@@ -2,22 +2,27 @@
 name: dw-resume
 description: >-
   Deterministically resume the active run after a `/clear` or in a fresh
-  session: read the persisted plan under `.ai/runs/` for the current branch and
-  report where work stands, instead of reconstructing context from scrollback.
-  Reports the goal, what is already done, the first not-done step (your resume
-  point), and any blockers. Read-only — never edits files or code. Use when
-  starting a session, after a `/clear`, or picking up paused work — or any time
-  someone asks "where were we", "what's left", "where did I leave off",
-  "resume", "pick up where I left off", or invokes "dw-resume".
+  session: read the persisted plan under `.ai/runs/` for the current branch —
+  and the quality pass under `.ai/verify/` — then report where work stands and
+  the single next step across the whole loop, instead of reconstructing context
+  from scrollback. Reports the goal, what is already done, the first not-done
+  step (your resume point), the state of any review / verify / risk pass, and
+  any blockers. Read-only — never edits files or code. Use when starting a
+  session, after a `/clear`, picking up paused work, or asking "what next" — or
+  any time someone asks "where were we", "what's left", "where did I leave off",
+  "what should I do next", "resume", "pick up where I left off", or invokes
+  "dw-resume".
 ---
 
-# dw-resume — deterministically resume the active run
+# dw-resume — resume the active run and point to the next step
 
-Reconstruct where work stands from the persisted run under `.ai/runs/`, keyed to
-the current git branch — no scrollback, no central index. **Read-only:** it
-reports the resume point and stops. It never edits `.ai/` artifacts or code
+Reconstruct where work stands from the persisted run under `.ai/runs/` — and the
+quality pass under `.ai/verify/` — keyed to the current git branch, with no
+scrollback and no central index. **Read-only:** it reports the resume point and
+the single next step, then stops. It never edits `.ai/` artifacts or code
 (flipping a step to `done` is `dw-build`; re-aligning a drifted plan is
-`dw-sync`).
+`dw-sync`; the review / verify / risk artifacts it reads are written by the
+`dw-quality` skills).
 
 ## What it reads
 
@@ -29,6 +34,20 @@ some of:
 - `SPEC.md` — frontmatter (`run/ticket/status/created/branch`) + a `## TLDR` (the
   goal).
 - `NOTES.md` — append-only log; its tail carries the latest blockers / quirks.
+
+It also reads the **quality pass** in `.ai/verify/<branch-slug>/` — the artifacts
+the `dw-quality` skills write — to recommend the next step once the plan is done.
+The `<branch-slug>` is the current branch slugified the same way `dw-quality` uses
+it (`ABC-123/password-reset` → `abc-123-password-reset`). It reads only what each
+artifact literally states:
+
+- `review.md` — the **Verdict** line
+  (`request-changes` / `approve-with-comments` / `approve`).
+- `verify-run.md` — the scenario verdicts (`PASS` / `FAIL` / `INCONCLUSIVE`).
+- `conform.md`, `risk.md`, `explain.md` — presence and any verdict line.
+
+**Their absence is normal** — it just means the quality pass hasn't started yet;
+`dw-resume` is self-contained and never depends on a sibling having run.
 
 ## Workflow
 
@@ -49,11 +68,17 @@ applies**:
    recorded `branch:` (mark any run lacking `branch:` frontmatter as "unmatched")
    and ask which to resume. Stop.
 
-### 2. Read the matched run
+### 2. Read the matched run — plan side and quality side
 
 Read `SPEC.md` (goal + status), `PLAN.md` if present, and the tail of `NOTES.md`.
 Read frontmatter tolerantly (trim quotes / whitespace, ignore trailing
 `# comments`); treat any unreadable value as missing.
+
+Then slugify the current branch and read whatever exists in
+`.ai/verify/<branch-slug>/` — `review.md`'s **Verdict**, `verify-run.md`'s scenario
+verdicts, and the presence of `conform.md` / `risk.md` / `explain.md`. An empty or
+absent folder is fine. Parse only what each file literally states; mark anything
+missing or unparseable as "not recorded" — never infer a verdict.
 
 ### 3. Report — branch on what exists
 
@@ -69,9 +94,24 @@ the first `todo`). Report:
   row is `blocked`, lead with it as a **BLOCKER**, not a step — surface the matching
   `NOTES.md` reason; the next move is to clear the blocker, not build.
 - **Blockers** — any `blocked` row + recent `NOTES.md` entries.
-- **Next:** continue building the resume step (e.g. via `dw-build`).
-- **All rows `done`** → "Plan complete — all N steps done." Next: `dw-sync` (verify
-  plan vs code) or open a PR. Don't invent a further step.
+- **Next** (plan incomplete) — continue building the resume step via `dw-build`. If a
+  `review.md` or `verify-run.md` already exists from an earlier pass, note it as
+  context, but building the remaining steps comes first.
+- **Next** (all rows `done`) — the plan is complete, so the **quality pass** drives the
+  next step. Read `.ai/verify/<branch-slug>/` and recommend the first that applies:
+  - **no `.ai/verify/` artifacts** → start the quality pass: `dw-review` (and/or
+    `dw-explain`).
+  - **`review.md` verdict = `request-changes`** → address the findings first (lead with
+    the critical / high count); don't advance past an unresolved review.
+  - **review clean, no `verify-run.md`** → `dw-explain` → `dw-verify` to prove it runs.
+  - **`verify-run.md` has any `FAIL` / `INCONCLUSIVE`** → fix and re-verify; lead with
+    the failing scenario.
+  - **all scenarios `PASS`, review clean, no `risk.md`** → `dw-risk` for blast radius.
+  - **`risk.md` present and everything green** → open a PR (`dw-git`, or your own
+    tooling); run `dw-sync` first if the plan has drifted from the code.
+
+  Recommend only what the artifacts state — an empty quality folder is itself the signal
+  to start reviewing, never a reason to call the change shippable.
 
 **SPEC.md only (no PLAN.md)** — the spec exists but isn't planned yet. Report its
 `status` and goal:
@@ -100,5 +140,9 @@ Report and hand off. `dw-resume` writes nothing — acting on the resume point i
 - **Never silently guess.** Report only what the files state; mark anything missing as
   "unknown (not recorded)." If the run is ambiguous, say so and ask — don't pick a path
   for the user.
+- **Quality reads are tolerant and optional.** Read only what `.ai/verify/` artifacts
+  literally state (the `Verdict` line, the PASS / FAIL rows); an absent folder is normal,
+  not a failure. Never fabricate a verdict or treat an empty quality folder as
+  "shippable".
 - **Tech-agnostic.** `dw-resume` itself needs only `git`; any build / verify commands
   belong to the `dw-build` / `dw-plan` it points to, which read them from the project.

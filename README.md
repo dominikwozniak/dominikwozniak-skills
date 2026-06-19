@@ -111,7 +111,9 @@ closes the pipeline.
 - **Thin harness, fat skills.** A skill's weight tracks its procedure; bulky detail (templates,
   taxonomies, stack examples) lives in `references/`, loaded on demand.
 - **Composable, not chained.** Skills stay separate (different axes) and link through shared `.ai/`
-  artifacts + a "Next:" pointer — a recommendation, never a forced sequence.
+  artifacts + a "Next:" pointer — a recommendation, never a forced sequence. Why there's no
+  autonomous loop closing this — and where a bounded one would fit — is in
+  [`docs/DESIGN.md`](docs/DESIGN.md), "Loops vs persistence."
 - **Explicit-only skills** (`dw-bootstrap`, `dw-handoff`, `dw-prune`, `dw-sync`) are invoked by name
   and never auto-trigger; the rest can be model-invoked when the task fits.
 

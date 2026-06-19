@@ -75,6 +75,10 @@ they can copy-paste, but do not run them yourself.
 Report and hand off. Fixing the environment is the user's action; `dw-doctor`
 only diagnoses.
 
+**Next:** if the report flagged a missing scaffold (no `.ai/`, no hooks), run
+`dw-bootstrap` to lay it down; if the environment is clean, `dw-spec` to open the
+first run (or `dw-resume` if one already exists).
+
 ## Guardrails
 
 - **Read-only.** Never install a tool, edit a file, or run a suggested fix. The

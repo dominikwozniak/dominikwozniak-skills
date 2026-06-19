@@ -80,3 +80,27 @@ skill ships here even though other reviewers exist.
 `dw-handoff`, `dw-prune`, and `dw-sync` are invoked by name and never auto-trigger — they compact or
 mutate state, or act on an explicit drift signal, so the model should not reach for them unbidden.
 Everything else can be model-invoked when the task fits.
+
+## Loops vs persistence — why these skills don't auto-run
+
+The field is drifting toward agents that prompt _themselves_ — loops that file a PR, review it,
+address the comments, and trigger the next one with no human in the seat. This catalog deliberately
+takes the other fork: **persistence plus a human gate**, not unattended autonomy. The reasoning is
+narrow and practical. A loop that has taken a wrong turn doesn't just waste one step — it compounds,
+multiplying both the error rate and the token burn for as long as it runs unwatched. The value these
+skills are built to deliver is _reliable resumption and grounded verification_ — a plan that survives
+`/clear`, a review tied to real `file:line`s, a "done" that was actually run — and none of that needs
+the loop to close itself. The HARD STOP is the feature, not a gap waiting to be automated away.
+
+That isn't a claim that loops never belong here. A bounded loop _could_ fit one day — but only as an
+**opt-in, explicit-invoke conductor that reuses the existing skills** (spec → plan → build → review →
+verify, each still gated), never a standing background process that merges on its own. If one is ever
+added, it stays a thin conductor over the catalog, not a parallel implementation of it.
+
+What it must **not** become is a zoo of personas. Predefining an `adversarial-reviewer`, a
+`security-reviewer`, an `explorer` as separate persona skills misreads what agents are good at: the
+model builds the context it needs _dynamically_, and hard-coding a cast of roles just freezes that
+flexibility into markdown. That is why `dw-review` weighs all five axes — correctness, readability,
+architecture, security, performance — in **one** skill rather than five persona skills handing a diff
+between them. The unit here is the **job** (review a change, prove it runs, assess its blast radius),
+not the **persona** doing it. One skill, one job — and the agent decides how to do it.
