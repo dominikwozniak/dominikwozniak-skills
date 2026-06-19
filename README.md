@@ -31,7 +31,7 @@ The _why_ behind each design choice is in [`docs/DESIGN.md`](docs/DESIGN.md).
 claude plugin marketplace add git@github.com:dominikwozniak/dominikwozniak-skills.git
 claude plugin install dw-planning   # spec → plan → build → resume → sync
 claude plugin install dw-quality    # review · conform · prune · explain · verify · risk
-claude plugin install dw-misc       # session handoff (+ future cross-cutting helpers)
+claude plugin install dw-misc       # bootstrap · git · handoff · doctor
 ```
 
 Then start a feature: `/dw-spec`. Resume after a `/clear`: `/dw-resume`.
@@ -45,12 +45,15 @@ Then start a feature: `/dw-spec`. Resume after a `/clear`: `/dw-resume`.
                             /dw-sync (fix drift)    /dw-prune   /dw-risk
   └────────────── .ai/runs/<id>/ ──────────────┘    └─ .ai/verify/<branch-slug>/ ─┘
 
+  Setup: /dw-bootstrap (scaffold a repo) · /dw-doctor (env health check)
+  /dw-git — commit / push / PR by your conventions, at any point.
   /dw-handoff — compact context for the next agent, at any point.
 ```
 
 `<branch-slug>` = the current branch slugified, e.g. `ABC-123/password-reset` →
-`abc-123-password-reset`. SHIP (open PR) is intentionally outside this toolkit — see
-[`docs/DESIGN.md`](docs/DESIGN.md), "Composable, not chained."
+`abc-123-password-reset`. SHIP — deciding when to open the PR, plus the deploy/CI that follows — is
+intentionally outside this toolkit (see [`docs/DESIGN.md`](docs/DESIGN.md), "Composable, not
+chained"); `dw-git` runs the git mechanics (commit / push / PR) by your conventions when you ask.
 
 A recommendation, not a rail: every skill stands alone and is invoked when you need it. They
 compose through the shared `.ai/` artifacts + a "Next:" pointer at the end of each skill.
@@ -85,8 +88,8 @@ never auto-fires).
 | [`dw-handoff`](skills/dw-handoff/SKILL.md) `⭑`     | Compact the session for the next agent                                                             | "session handoff", "handoff"                        | `.ai/handoffs/<ts>.md`                 |
 
 Within Review & verify: `dw-explain → dw-verify` is a chain (verify runs explain's scenarios);
-`dw-review` and `dw-conform` are independent axes; `dw-risk` reads whatever neighbours exist and
-closes the pipeline.
+`dw-review` and `dw-conform` are independent axes; `dw-prune` trims redundant tests on explicit
+consent; `dw-risk` reads whatever neighbours exist and closes the pipeline.
 
 ## 📦 Plugins (install what you need)
 

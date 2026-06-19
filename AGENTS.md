@@ -32,8 +32,13 @@ code project.
 4. Bump the plugin's patch version in **both** `plugins/<name>/.claude-plugin/plugin.json` and the
    matching `.claude-plugin/marketplace.json` entry — they must stay in sync (CI enforces it via
    `validate-manifests.sh`).
-5. Update the README: add the skill to the **Plugins** section _and_ the **task-router table** (a new
-   row matching the skill's trigger phrase + output shape).
+5. Update the docs that name skills — more than just the README Plugins + task-router. Grep the
+   skill name across `README.md` and `docs/DESIGN.md` to catch every hit; the usual ones:
+   - README **Plugins** section and **task-router table** row (trigger phrase + output shape).
+   - README **workflow diagram** if the skill joins the core spec→ship loop, and the **Quick
+     start** install-comment if a plugin's skill list changes.
+   - If explicit-invoke (`disable-model-invocation: true`): the `⭑` in the task-router table, plus
+     the explicit-only lists in README **How it works** _and_ `docs/DESIGN.md`.
 6. `pnpm lint && pnpm format && pnpm validate:manifests`.
 
 Copy an existing skill (e.g. `dw-handoff`) as a starting point.

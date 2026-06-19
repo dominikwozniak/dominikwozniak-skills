@@ -77,9 +77,9 @@ skill ships here even though other reviewers exist.
 
 ## Explicit-only skills
 
-`dw-handoff`, `dw-prune`, and `dw-sync` are invoked by name and never auto-trigger — they compact or
-mutate state, or act on an explicit drift signal, so the model should not reach for them unbidden.
-Everything else can be model-invoked when the task fits.
+`dw-bootstrap`, `dw-handoff`, `dw-prune`, and `dw-sync` are invoked by name and never auto-trigger —
+they scaffold a repo, or compact or mutate state, or act on an explicit drift signal, so the model
+should not reach for them unbidden. Everything else can be model-invoked when the task fits.
 
 ## Loops vs persistence — why these skills don't auto-run
 
