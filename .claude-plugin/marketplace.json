@@ -46,9 +46,19 @@
     },
     {
       "name": "dw-quality",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "source": "./plugins/dw-quality",
-      "keywords": ["explain", "verify", "review", "conform", "prune", "tests", "quality", "diff"],
+      "keywords": [
+        "explain",
+        "verify",
+        "review",
+        "conform",
+        "fix",
+        "prune",
+        "tests",
+        "quality",
+        "diff"
+      ],
       "category": "quality",
       "tags": ["explain", "verify", "review"]
     }

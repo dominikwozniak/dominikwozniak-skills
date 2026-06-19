@@ -1,6 +1,6 @@
 {
   "name": "dw-quality",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Post-implementation quality pipeline — explain, verify, and review a change before ship. Every artifact lives under `.ai/verify/` keyed by branch. Seed skill: dw-explain (explains what changed and generates runnable, code-grounded verification scenarios for dw-verify to run).",
   "author": {
     "name": "Dominik Wozniak"

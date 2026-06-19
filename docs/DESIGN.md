@@ -75,6 +75,25 @@ The catalog is also self-contained: it never _depends_ on external skills (they 
 absent). Composition with outside tools is optional, never required — which is why a full review
 skill ships here even though other reviewers exist.
 
+## Diagnosis vs treatment — the one writer in the quality pipeline
+
+The quality skills are read-only on purpose. `dw-review`, `dw-conform`, `dw-explain`, `dw-verify`, and
+`dw-risk` diagnose a change and record what they find under `.ai/verify/<branch-slug>/`; none of them
+edits code. That separation is what keeps the artifacts honest — an auditor that also patched things
+would be tempted to under-report what it couldn't fix, and its record would stop being a faithful
+diagnosis.
+
+`dw-fix` is the deliberate exception: the **single writer**, the treatment step. It reads the findings
+the auditors recorded and applies them — never inventing work outside them — with the same per-change
+discipline as `dw-build`: minimal slice, run the check, one commit per finding, mark it resolved. It
+stays inside the catalog's thesis in three ways. It is **human-invoked, not a loop** — it treats the
+findings in front of it and stops; it does not review-fix-review on its own. It **issues no verdict**:
+re-running the auditor on the fixed code is what confirms the change is clean, so the thing that grades
+the work is never the thing that wrote it. And it is **severity-gated** — `blockers` clears the
+critical / high findings and stops for a re-audit, so `dw-conform` / `dw-explain` / `dw-verify` never
+run against code a review already flagged as broken; the lower-severity findings are then fixed in one
+batch on the stable picture, rather than re-derived by every later pass.
+
 ## Explicit-only skills
 
 `dw-bootstrap`, `dw-handoff`, `dw-prune`, `dw-sync`, and `dw-setup-precommit` are invoked by name and
