@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - ".ai/**"
-      - "tests/fixtures/ai-artifacts/**"
+      - scripts/tests/**
       - plugins/dw-planning/scripts/validate-ai-artifacts.sh
       - plugins/dw-planning/scripts/plan-status.sh
       - plugins/dw-planning/scripts/slugify.sh
@@ -14,7 +14,7 @@ on:
     branches: [main]
     paths:
       - ".ai/**"
-      - "tests/fixtures/ai-artifacts/**"
+      - scripts/tests/**
       - plugins/dw-planning/scripts/validate-ai-artifacts.sh
       - plugins/dw-planning/scripts/plan-status.sh
       - plugins/dw-planning/scripts/slugify.sh

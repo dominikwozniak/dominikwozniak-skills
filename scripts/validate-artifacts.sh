@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
-# Validate the repo's .ai/ work artifacts against the structural schema, then
-# assert the golden-fixture contract: good/ pairs pass, malformed/ pairs fail,
-# and plan-status.sh --check agrees on the good PLAN fixtures. Backs
-# `pnpm validate:artifacts` and the validate-ai-artifacts CI workflow.
+# Validate the repo's .ai/ work artifacts against the structural schema, then run
+# the validator's self-test (synthetic good/malformed cases prove the gate accepts
+# valid artifacts and rejects malformed ones). Backs `pnpm validate:artifacts` and
+# the validate-ai-artifacts CI workflow.
 set -uo pipefail
 export LC_ALL=C
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 VALIDATOR="$ROOT/plugins/dw-planning/scripts/validate-ai-artifacts.sh"
-PLAN_STATUS="$ROOT/plugins/dw-planning/scripts/plan-status.sh"
-FIX="$ROOT/tests/fixtures/ai-artifacts"
+SELFTEST="$ROOT/scripts/tests/validate-artifacts.test.sh"
 
 FAILED=0
 
@@ -27,45 +26,8 @@ else
 fi
 
 echo
-echo "Checking good/ fixtures (expect pass)..."
-for d in "$FIX"/good/*/; do
-  [ -d "$d" ] || continue
-  # Require exit 0 AND proof at least one artifact was actually validated:
-  # --all exits 0 when it discovers nothing, so a path typo in a good fixture
-  # would otherwise pass vacuously instead of failing loudly.
-  out=$("$VALIDATOR" --all "$d" 2>&1)
-  rc=$?
-  if [ "$rc" -eq 0 ] && printf '%s\n' "$out" | grep -q '^OK'; then
-    echo "OK  good/$(basename "$d")"
-  else
-    echo "::error::good fixture should pass with a validated artifact (exit $rc): $(basename "$d")"
-    FAILED=1
-  fi
-done
-
-echo
-echo "Checking malformed/ fixtures (expect fail)..."
-for d in "$FIX"/malformed/*/; do
-  [ -d "$d" ] || continue
-  if "$VALIDATOR" --all "$d" >/dev/null 2>&1; then
-    echo "::error::malformed fixture should fail but passed: $(basename "$d")"
-    FAILED=1
-  else
-    echo "OK  malformed/$(basename "$d") (correctly rejected)"
-  fi
-done
-
-echo
-echo "Checking plan-status.sh --check on good PLAN fixtures..."
-while IFS= read -r plan; do
-  [ -n "$plan" ] || continue
-  if "$PLAN_STATUS" --check "$plan" >/dev/null 2>&1; then
-    echo "OK  plan-status --check: ${plan#"$FIX"/}"
-  else
-    echo "::error::plan-status --check failed on good fixture: $plan"
-    FAILED=1
-  fi
-done < <(find "$FIX/good" -name PLAN.md | sort)
+echo "Running validator self-test..."
+bash "$SELFTEST" || FAILED=1
 
 echo
 if [ "$FAILED" -eq 0 ]; then
