@@ -6,11 +6,9 @@ this is the longer rationale.
 ## The failure modes these skills target
 
 Agentic coding fails in recognisable ways, and each design choice below is a direct answer to one of
-them: the plan that lived only in the model's context and vanished on `/clear`; the confident wrong
-assumption that surfaced only after the rewrite; the "done" that was never actually run; the plan that
-drifted from the code until neither described reality; the change that merged on a glance. The
-[README](../README.md) maps each failure mode to the skill that kills it — the sections below explain
-_why_ the skills are shaped the way they are to make those guarantees hold.
+them. The [README](../README.md#-why-these-skills-exist) maps each failure mode to the skill that
+kills it; the sections below explain _why_ the skills are shaped the way they are to make those
+guarantees hold.
 
 ## Persistence lives in the skill, not a wrapper
 

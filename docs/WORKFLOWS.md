@@ -7,32 +7,13 @@ the _how_.
 
 ---
 
-## Philosophy in one screen
+## Philosophy in one line
 
-Five ideas shape every recipe below. They're condensed here; the full argument is in
-[`DESIGN.md`](DESIGN.md).
-
-- **Persistence lives in the skill, not a wrapper.** Each skill bakes its own `.ai/`
-  output paths into its procedure — no `.claude/commands/` glue layer. Plans and reviews
-  land on disk automatically and travel with the installed plugin, so work **survives a
-  `/clear`, a new session, or a handoff to another agent**. A workflow whose plan only ever
-  lives in the model's context is one you cannot reliably resume or verify.
-- **`.ai/` is tracked, one folder per task, no central index.** Artifacts are real work
-  documents committed alongside the code they describe. A run records its branch in
-  frontmatter; resume globs the runs, matches the current branch, and reports the first
-  not-`done` step — **deterministic, no scrollback archaeology**, and no shared index file
-  to become a merge-conflict magnet.
-- **Grounded in `file:line`.** Specs cite real sibling files; reviews point at lines that
-  exist in the diff; verification records the actual command output. Nothing is asserted
-  that isn't anchored to something real in the repo.
-- **A human gate, not an autonomous loop.** The catalog deliberately takes the
-  persistence-plus-human-gate fork over unattended autonomy: a loop that has taken a wrong
-  turn compounds the error and the token burn for as long as it runs unwatched. **The HARD
-  STOP is the feature, not a gap waiting to be automated away.**
-- **Composable, not chained.** Skills stay separate — different axes, different inputs,
-  different guards — and connect through three light layers: shared `.ai/` artifacts a
-  neighbor reads when present, a "Next:" pointer at the end of each skill body, and the
-  README task-router. None of them is a forced sequence; every skill stands alone.
+The recipes below rest on five ideas — persistence in the skill (not a wrapper), a tracked `.ai/`
+folder per task, `file:line` grounding, a human gate over an autonomous loop, and
+composable-not-chained skills. The full argument is in [`DESIGN.md`](DESIGN.md); the failure modes
+each one answers — mapped to the skill that kills each — are in the
+[README](../README.md#-why-these-skills-exist).
 
 ---
 
