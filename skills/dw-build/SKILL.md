@@ -119,7 +119,11 @@ The heart of the skill. One step, one cycle:
   Commit column, then run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/plan-status.sh" <PLAN.md>` to refresh
   the frontmatter `status:` from the table — you own the row, the script owns the scalar (it's
   _derived_; idempotent; never hand-edit it). `${CLAUDE_PLUGIN_ROOT}` is an env var Claude Code
-  substitutes to this plugin's install dir; the script ships with the plugin, not the project repo. Append a `NOTES.md` entry (newest at the bottom) recording what landed,
+  substitutes to this plugin's install dir; the script ships with the plugin, not the project repo.
+  Then validate the edited artifacts: `bash "${CLAUDE_PLUGIN_ROOT}/scripts/validate-ai-artifacts.sh" <run-dir>`
+  (the run dir `find-active-run.sh` printed) confirms `PLAN.md` still satisfies the structural schema —
+  column shape, status enum, the done row's SHA; fix any reported error before continuing, never skip past it.
+  Append a `NOTES.md` entry (newest at the bottom) recording what landed,
   any decision worth keeping, and follow-ups. The recorded SHA is the _code_ commit's —
   land the plan/notes bookkeeping as a small follow-up commit or leave it staged for
   review, but never amend the code commit to fold it in.
@@ -184,6 +188,8 @@ earlier entries.
   plain commit auto-signs (never `-S`, never reconfigure signing).
 - **Never renumber a committed step.** `dw-build` only flips Status / Commit; re-aligning
   a drifted plan is `dw-sync`'s job.
+- **Validate after writing.** After flipping the row, `validate-ai-artifacts.sh` on the run dir
+  must pass — a schema error means the edit broke the artifact's shape; fix it, never bypass.
 - **Stop-and-ask on irreversible actions** — a hard guard, independent of `auto`.
 - **Never silently guess.** Ambiguous run, unfound command, `blocked` row — name it and
   ask.

@@ -146,7 +146,10 @@ Apply only what was approved, editing `PLAN.md` in place — flip Status/Commit,
 new rows, set `blocked` where flagged. Then run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/plan-status.sh"
 <PLAN.md>` to refresh the frontmatter `status:` from the table — it's _derived_ state (idempotent;
 never hand-set the scalar). `${CLAUDE_PLUGIN_ROOT}` is an env var Claude Code substitutes to this
-plugin's install dir; the script ships with the plugin, not the project repo. Then append a `NOTES.md` entry (newest at the bottom,
+plugin's install dir; the script ships with the plugin, not the project repo. Then run
+`bash "${CLAUDE_PLUGIN_ROOT}/scripts/validate-ai-artifacts.sh" <run-dir>` to confirm the reconciled
+`PLAN.md` still satisfies the structural schema (column shape, status enum, every done row's SHA) —
+fix any reported error before logging. Then append a `NOTES.md` entry (newest at the bottom,
 under a `## YYYY-MM-DD HH:MM` heading) recording what was reconciled: which rows flipped to
 which SHA, which ids were appended, what was flagged and why. Mark any
 proposed-but-unapproved change in the note as `proposed (not applied)`, so the record matches
@@ -186,6 +189,8 @@ entries.
   gets a fresh id appended — never an insertion that shifts existing ids.
 - **Propose, then STOP.** `dw-sync` mutates `PLAN.md`; it shows the plan diff and edits only
   on explicit consent (batch / per-row / none). Proposal-only is a complete outcome.
+- **Validate after applying.** Once the approved edits land, `validate-ai-artifacts.sh` on the run
+  dir must pass before you log and report — a schema error means the re-sync malformed the table.
 - **Bookkeeping, not code.** Never run tests or builds, never create or archive a run, never
   commit or push unless asked. The work is `.ai/` reconciliation, nothing more.
 - **Never silently guess.** Ambiguous run, a commit you can't tie to a step, a divergence you
