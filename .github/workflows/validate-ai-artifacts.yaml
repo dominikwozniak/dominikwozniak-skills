@@ -1,0 +1,40 @@
+name: Validate .ai artifacts
+
+on:
+  pull_request:
+    paths:
+      - ".ai/**"
+      - "tests/fixtures/ai-artifacts/**"
+      - plugins/dw-planning/scripts/validate-ai-artifacts.sh
+      - plugins/dw-planning/scripts/plan-status.sh
+      - plugins/dw-planning/scripts/slugify.sh
+      - scripts/validate-artifacts.sh
+      - .github/workflows/validate-ai-artifacts.yaml
+  push:
+    branches: [main]
+    paths:
+      - ".ai/**"
+      - "tests/fixtures/ai-artifacts/**"
+      - plugins/dw-planning/scripts/validate-ai-artifacts.sh
+      - plugins/dw-planning/scripts/plan-status.sh
+      - plugins/dw-planning/scripts/slugify.sh
+      - scripts/validate-artifacts.sh
+      - .github/workflows/validate-ai-artifacts.yaml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate .ai artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+      - name: Validate artifacts
+        shell: bash
+        run: ./scripts/validate-artifacts.sh

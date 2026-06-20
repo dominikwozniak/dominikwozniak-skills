@@ -49,7 +49,7 @@ fi
 
 echo
 echo "Checking dw-planning run scripts (present + executable)..."
-for s in slugify.sh new-run.sh find-active-run.sh; do
+for s in slugify.sh new-run.sh find-active-run.sh validate-ai-artifacts.sh; do
   f="plugins/dw-planning/scripts/$s"
   if [ ! -f "$f" ]; then
     echo "::error::missing shared script: $f"
