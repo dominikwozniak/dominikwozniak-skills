@@ -37,7 +37,8 @@ short SHA that landed it.
   hardcoded** — the test / lint / run commands and the commit convention
   (`## Git conventions`).
 - **Writes:** the step's code and tests; the `PLAN.md` row flipped to `done` + short
-  SHA; an appended `NOTES.md` entry. One logical change per commit.
+  SHA (and its frontmatter `status:` refreshed from the table by the bundled `plan-status.sh`);
+  an appended `NOTES.md` entry. One logical change per commit.
 
 ## Workflow
 
@@ -111,7 +112,10 @@ The heart of the skill. One step, one cycle:
   (resolved in step 3). Plain `git commit` — it auto-signs; never add `-S` or "fix"
   signing. Capture the short SHA with `git rev-parse --short HEAD`.
 - **mark-done.** Flip the row's Status to `done` and write that short SHA into the
-  Commit column. Append a `NOTES.md` entry (newest at the bottom) recording what landed,
+  Commit column, then run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/plan-status.sh" <PLAN.md>` to refresh
+  the frontmatter `status:` from the table — you own the row, the script owns the scalar (it's
+  _derived_; idempotent; never hand-edit it). `${CLAUDE_PLUGIN_ROOT}` is an env var Claude Code
+  substitutes to this plugin's install dir; the script ships with the plugin, not the project repo. Append a `NOTES.md` entry (newest at the bottom) recording what landed,
   any decision worth keeping, and follow-ups. The recorded SHA is the _code_ commit's —
   land the plan/notes bookkeeping as a small follow-up commit or leave it staged for
   review, but never amend the code commit to fold it in.
@@ -156,7 +160,9 @@ After the step (or after `auto` finishes / a guard trips), report which step lan
 **`PLAN.md` status table** — columns `Phase | Step | Title | Status | Commit`;
 Status ∈ `todo` | `doing` | `done` | `blocked`; Commit holds the short SHA once the step
 lands. The first row whose Status ≠ `done` is the resume point. Step ids are frozen once
-committed — `dw-build` flips Status / Commit, nothing else.
+committed — `dw-build` flips Status / Commit, nothing else. The frontmatter `status:` is
+_derived_ from this table (`plan-status.sh`: any `blocked` → `blocked`; else all
+`done` → `done`; else any started → `doing`; else `todo`) — never hand-edit it.
 
 **`NOTES.md`** — an append-only log, newest entries at the bottom, each under a
 `## YYYY-MM-DD HH:MM` heading. Capture decisions, blockers, and surprises; don't rewrite

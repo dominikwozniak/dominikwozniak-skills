@@ -9,8 +9,15 @@ code project.
   never via the symlink under `plugins/`.
 - **`plugins/`** — Claude Code plugins exposed via `.claude-plugin/marketplace.json`. Each plugin's
   `skills/<name>` is a **git-tracked symlink** (mode 120000) → `../../../skills/<name>`, plus
-  `plugins/<name>/.claude-plugin/plugin.json`.
-- **`scripts/`** — `validate-manifests.sh` (backs `pnpm validate:manifests`).
+  `plugins/<name>/.claude-plugin/plugin.json`. A script **shared by more than one skill in the same
+  plugin** lives once under `plugins/<name>/scripts/` (a real file, not a symlink) and is invoked
+  from skill bodies as `${CLAUDE_PLUGIN_ROOT}/scripts/<script>.sh` — the env var Claude Code
+  substitutes to the installed plugin's dir. (A script used by **one** skill stays bundled in that
+  skill: `skills/<name>/scripts/` invoked via `<this-skill-dir>/…`, e.g. `dw-doctor`.) Installs copy
+  the plugin into the plugin cache (outside the repo tree), so a skill can't reach a sibling skill's
+  dir by relative path — hence the plugin-level home for shared scripts.
+- **`scripts/`** — repo CI/validation tooling only (e.g. `validate-manifests.sh`, backing
+  `pnpm validate:manifests`) — not skill runtime assets.
 - **`.claude-plugin/marketplace.json`** — makes this repo installable as a Claude Code plugin
   source.
 

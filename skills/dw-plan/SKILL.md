@@ -146,7 +146,8 @@ are immutable once committed — never renumber a step that already has a commit
 | 1     | 1.2  | [...]                 | todo   |        |
 
 Status ∈ `todo` | `doing` | `done` | `blocked`. Commit = short SHA once the step
-lands.
+lands. The frontmatter `status:` is _derived_ from this table — `dw-build`/`dw-sync`
+refresh it via `scripts/plan-status.sh`; write it `todo` here and never hand-set it again.
 
 ## Architecture decisions
 

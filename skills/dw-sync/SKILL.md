@@ -140,7 +140,10 @@ the conversation is a correct outcome. Never apply on silence, on inference, or 
 ### 5. Apply the approved changes and log them
 
 Apply only what was approved, editing `PLAN.md` in place — flip Status/Commit, append the
-new rows, set `blocked` where flagged. Then append a `NOTES.md` entry (newest at the bottom,
+new rows, set `blocked` where flagged. Then run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/plan-status.sh"
+<PLAN.md>` to refresh the frontmatter `status:` from the table — it's _derived_ state (idempotent;
+never hand-set the scalar). `${CLAUDE_PLUGIN_ROOT}` is an env var Claude Code substitutes to this
+plugin's install dir; the script ships with the plugin, not the project repo. Then append a `NOTES.md` entry (newest at the bottom,
 under a `## YYYY-MM-DD HH:MM` heading) recording what was reconciled: which rows flipped to
 which SHA, which ids were appended, what was flagged and why. Mark any
 proposed-but-unapproved change in the note as `proposed (not applied)`, so the record matches

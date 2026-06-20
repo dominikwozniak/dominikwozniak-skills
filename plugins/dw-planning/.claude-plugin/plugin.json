@@ -1,6 +1,6 @@
 {
   "name": "dw-planning",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Persistent spec → plan → build → resume workflow. Every artifact lives under `.ai/runs/` (tracked in git). Seed skill: dw-spec (writes SPEC.md with an Open-Questions hard gate).",
   "author": {
     "name": "Dominik Wozniak"

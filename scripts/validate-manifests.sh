@@ -32,4 +32,19 @@ while IFS=$'\t' read -r name source mp_v; do
   fi
 done < <(jq -r '.plugins[] | [.name, .source, .version] | @tsv' .claude-plugin/marketplace.json)
 
+echo
+echo "Checking plugin-level shared scripts..."
+# plan-status.sh is shared across dw-planning's skills via ${CLAUDE_PLUGIN_ROOT}; it lives
+# once at the plugin root, so just assert it exists and is executable.
+PS_SHARED="plugins/dw-planning/scripts/plan-status.sh"
+if [ ! -f "$PS_SHARED" ]; then
+  echo "::error::missing shared script: $PS_SHARED"
+  FAILED=1
+elif [ ! -x "$PS_SHARED" ]; then
+  echo "::error::$PS_SHARED is not executable (chmod +x)"
+  FAILED=1
+else
+  echo "OK  $PS_SHARED (present, executable)"
+fi
+
 exit $FAILED

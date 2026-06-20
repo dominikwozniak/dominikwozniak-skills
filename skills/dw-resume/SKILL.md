@@ -84,6 +84,12 @@ missing or unparseable as "not recorded" — never infer a verdict.
 
 **PLAN.md present, table parseable** — columns are
 `Phase | Step | Title | Status | Commit`; Status ∈ `todo`/`doing`/`done`/`blocked`.
+The frontmatter `status:` is _derived_ from this table, so verify it (read-only) with
+`bash "${CLAUDE_PLUGIN_ROOT}/scripts/plan-status.sh" --check <PLAN.md>` — `${CLAUDE_PLUGIN_ROOT}`
+is an env var Claude Code substitutes to this plugin's install dir, and `--check`
+**writes nothing**. On drift, lead the report with a one-line warning ("PLAN frontmatter
+says `<x>` but the table implies `<y>` — heal via `dw-build` / `dw-sync` / `plan-status.sh`");
+the table stays authoritative for the resume point regardless.
 The **resume point is the first row, top-to-bottom, whose Status ≠ `done`** (a
 `doing` row is the resume point even if `todo` rows follow it — never skip ahead to
 the first `todo`). Report:
@@ -134,7 +140,8 @@ Report and hand off. `dw-resume` writes nothing — acting on the resume point i
 
 ## Guardrails
 
-- **Read-only.** Never edit `.ai/` artifacts or code.
+- **Read-only.** Never edit `.ai/` artifacts or code. (Running `plan-status.sh --check` is
+  fine — it only reads and reports; the bare, mutating form is `dw-build`/`dw-sync`'s job.)
 - **Branch-keyed, no index.** Identity is the git branch matched against run
   frontmatter — never a central index file.
 - **Never silently guess.** Report only what the files state; mark anything missing as
