@@ -17,7 +17,9 @@
 set -euo pipefail
 export LC_ALL=C
 
-# lowercase; every run of non-[a-z0-9] -> single '-'; trim leading/trailing '-'
+# lowercase; every run of non-[a-z0-9] -> single '-'; trim leading/trailing '-'.
+# Non-ASCII is not transliterated: under LC_ALL=C each byte becomes '-'
+# (e.g. "café" -> "caf"). Tickets and git branches are ASCII, so this is fine.
 slug() {
   printf '%s' "${1:-}" | tr 'A-Z' 'a-z' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
 }

@@ -47,4 +47,36 @@ else
   echo "OK  $PS_SHARED (present, executable)"
 fi
 
+echo
+echo "Checking dw-planning run scripts (present + executable)..."
+for s in slugify.sh new-run.sh find-active-run.sh; do
+  f="plugins/dw-planning/scripts/$s"
+  if [ ! -f "$f" ]; then
+    echo "::error::missing shared script: $f"
+    FAILED=1
+  elif [ ! -x "$f" ]; then
+    echo "::error::$f is not executable (chmod +x)"
+    FAILED=1
+  else
+    echo "OK  $f (present, executable)"
+  fi
+done
+
+echo
+echo "Checking slugify.sh parity (dw-planning vs dw-quality)..."
+# slugify.sh is duplicated into dw-quality (cross-plugin can't share a file); the
+# two copies MUST stay byte-identical, or the slug drift this script guards against
+# reappears one layer down.
+SLUG_A="plugins/dw-planning/scripts/slugify.sh"
+SLUG_B="plugins/dw-quality/scripts/slugify.sh"
+if [ ! -f "$SLUG_B" ]; then
+  echo "::error::missing $SLUG_B (dw-quality needs its own copy)"
+  FAILED=1
+elif ! diff -q "$SLUG_A" "$SLUG_B" >/dev/null 2>&1; then
+  echo "::error::slugify.sh copies diverged ($SLUG_A vs $SLUG_B) — must be byte-identical"
+  FAILED=1
+else
+  echo "OK  slugify.sh copies byte-identical"
+fi
+
 exit $FAILED

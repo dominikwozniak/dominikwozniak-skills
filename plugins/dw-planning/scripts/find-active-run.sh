@@ -47,12 +47,16 @@ if [ "${#matches[@]}" -eq 0 ]; then
   exit 1
 fi
 
-# Most recent wins (run-id is date-prefixed, so a lexical sort orders by age).
-IFS=$'\n' sorted=($(printf '%s\n' "${matches[@]}" | sort)); unset IFS
-last=$(( ${#sorted[@]} - 1 ))
-run_dir="${sorted[$last]}"
-if [ "${#sorted[@]}" -gt 1 ]; then
-  echo "find-active-run.sh: ${#sorted[@]} runs match '$branch'; using newest: $(basename "$run_dir")" >&2
+# One match is the common case. On the rare multi-match, prefer the most recently
+# modified run (the one being worked): the run-id's date prefix can't break a
+# same-day tie, and a lexical fallback would order by description, not recency.
+if [ "${#matches[@]}" -eq 1 ]; then
+  run_dir="${matches[0]}"
+else
+  run_dir="$(ls -dt "${matches[@]}")"
+  run_dir="${run_dir%%$'\n'*}"
+  echo "find-active-run.sh: ${#matches[@]} runs match '$branch'; using most-recently-modified: $(basename "$run_dir")" >&2
+  echo "find-active-run.sh: if that's the wrong one, name the run explicitly (e.g. dw-sync <run-id>)." >&2
 fi
 
 printf '%s\n' "$run_dir"
@@ -80,7 +84,8 @@ awk '
   hdr==1 {
     if ($0 !~ /\|/) exit
     if ($0 ~ /^[[:space:]]*\|[[:space:]:|-]+\|[[:space:]]*$/) next
-    split($0, c, "|")
+    nf2=split($0, c, "|")
+    if (nf2 < scol) next
     s=c[scol]; gsub(/^[[:space:]]+|[[:space:]]+$/,"",s); gsub(/`/,"",s); s=tolower(s)
     if (s=="") next
     if (s!="done") {
@@ -90,5 +95,11 @@ awk '
       found=1; exit
     }
   }
-  END { if (!found) print "step: none (all steps done)" }
+  END {
+    if (scol==0) {
+      print "find-active-run.sh: no status table (need a | Status | Commit | header) in PLAN.md" > "/dev/stderr"
+      exit 3
+    }
+    if (!found) print "step: none (all steps done)"
+  }
 ' "$plan"
