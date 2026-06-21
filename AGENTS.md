@@ -52,8 +52,9 @@ code project.
    - README **workflow diagram** if the skill joins the core spec→ship loop, and the **Quick
      start** install-comment if a plugin's skill list changes.
    - If explicit-invoke (`disable-model-invocation: true`): the `⭑` in the task-router table, plus
-     the explicit-only lists in README **How it works** _and_ `docs/DESIGN.md`.
-6. `pnpm lint && pnpm format && pnpm validate:manifests`.
+     the explicit-only lists in README **How it works** _and_ `docs/DESIGN.md` — all three are
+     enforced by `pnpm validate:docs`, so a missed one fails CI rather than drifting silently.
+6. `pnpm lint && pnpm format && pnpm validate:manifests && pnpm validate:docs`.
 
 Copy an existing skill (e.g. `dw-handoff`) as a starting point.
 
@@ -79,4 +80,7 @@ Runs on every PR + push to `main`:
 - `pnpm lint` — `agnix` validates `CLAUDE.md`/`SKILL.md`/manifests.
 - `pnpm format` — `prettier --check` (`proseWrap: preserve`).
 - `pnpm validate:manifests` — `claude plugin validate` + marketplace↔plugin version sync.
+- `pnpm validate:artifacts` — `.ai/` artifact schema + runtime-script self-tests under `scripts/tests/`.
+- `pnpm validate:docs` — README/`docs/DESIGN.md` ↔ skills sync (dead links, undocumented skills,
+  explicit-invoke `⭑` consistency).
 - `trufflehog` secrets scan.
