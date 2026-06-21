@@ -93,8 +93,7 @@ required after blockers, optional after a medium/low-only pass.
 A recommendation, not a rail: every skill stands alone and is invoked when you need it. They
 compose through the shared `.ai/` artifacts + a "Next:" pointer at the end of each skill.
 
-<details>
-<summary><strong>◇ Task router — which skill for which task</strong></summary>
+## ◇ Task router — which skill for which task
 
 A task may match several rows — read all that apply. `⭑` = explicit-invoke only: say its name (it
 never auto-fires).
@@ -131,10 +130,7 @@ consent; `dw-risk` reads whatever neighbours exist and closes the pipeline. `dw-
 writer — it applies the findings the auditors record (blockers first), then you re-audit to confirm
 (required after blockers, optional after a medium/low-only pass).
 
-</details>
-
-<details>
-<summary><strong>▣ Plugins — install what you need (3)</strong></summary>
+## ▣ Plugins — install what you need (3)
 
 - **`dw-planning`** — `dw-spec` · `dw-resume` · `dw-plan` · `dw-build` · `dw-sync`. The persistent
   spec→plan→build loop; artifacts under `.ai/runs/<id>/`.
@@ -147,8 +143,6 @@ writer — it applies the findings the auditors record (blockers first), then yo
   `dw-doctor` is a read-only check that the tools and hooks the loop assumes are actually present;
   `dw-setup-precommit` wires git-level husky + lint-staged hooks (team-shared, distinct from the
   session-only `.claude/hooks/*.sh`).
-
-</details>
 
 <details>
 <summary><strong>⚙ How it works — the design in one screen</strong></summary>
