@@ -32,9 +32,13 @@ for d in "$ROOT"/skills/*/; do
     skipped=$((skipped + 1))
     continue
   fi
-  ln -sfn "${d%/}" "$link" # absolute target; -n replaces an existing symlinked dir instead of following it
-  printf 'LINK  %-28s -> %s\n' "$name" "${d%/}"
-  installed=$((installed + 1))
+  # absolute target; -n replaces an existing symlinked dir instead of following it
+  if ln -sfn "${d%/}" "$link"; then
+    printf 'LINK  %-28s -> %s\n' "$name" "${d%/}"
+    installed=$((installed + 1))
+  else
+    echo "FAIL  $name — could not symlink $link"
+  fi
 done
 
 echo
