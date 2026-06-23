@@ -41,8 +41,11 @@ code project.
 
 1. Create `skills/<name>/SKILL.md` (kebab-case `name`, `description` with trigger phrases),
    following the shape in [`docs/SKILL-ANATOMY.md`](docs/SKILL-ANATOMY.md).
-2. Create `plugins/<name>/.claude-plugin/plugin.json` AND
-   `ln -s ../../../skills/<name> plugins/<name>/skills/<name>` AND `git add` the symlink.
+2. Create `plugins/<name>/.claude-plugin/plugin.json` AND its **two** skill symlinks — the plugin
+   one `ln -s ../../../skills/<name> plugins/<name>/skills/<name>` (Claude Code) AND the Codex one
+   `ln -s ../../skills/<name> .codex/skills/<name>` (Codex in-repo discovery) — then `git add` both
+   (each mode 120000). The `.codex/` link is what makes the skill discoverable to Codex working
+   inside this repo; `validate-manifests.sh` checks it stays in sync.
 3. Add a row to `.claude-plugin/marketplace.json` (version in sync with `plugin.json`).
 4. Bump the plugin's patch version in **both** `plugins/<name>/.claude-plugin/plugin.json` and the
    matching `.claude-plugin/marketplace.json` entry — they must stay in sync (CI enforces it via
