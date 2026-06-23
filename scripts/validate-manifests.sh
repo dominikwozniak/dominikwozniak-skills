@@ -109,4 +109,33 @@ else
   echo "OK  no doubled <this-skill-dir> placeholder"
 fi
 
+echo
+echo "Checking .codex/skills/ stays in sync with skills/ (Codex in-repo discovery)..."
+# Every skill needs a committed .codex/skills/<name> -> ../../skills/<name> symlink so Codex working
+# inside this repo discovers it. A skill with no .codex link (Claude Code sees it via plugins/, Codex
+# does not) is silent drift the other checks miss; a dangling or wrong-target link is just as bad.
+for d in skills/*/; do
+  name="$(basename "$d")"
+  link=".codex/skills/$name"
+  if [ ! -L "$link" ]; then
+    echo "::error::$link missing — add: ln -s ../../skills/$name $link (skill not discoverable under Codex in-repo)"
+    FAILED=1
+  elif [ ! -e "$link" ]; then
+    echo "::error::$link is a dangling symlink (target '$(readlink "$link")' missing)"
+    FAILED=1
+  elif [ "$(readlink "$link")" != "../../skills/$name" ]; then
+    echo "::error::$link must point to ../../skills/$name (got '$(readlink "$link")')"
+    FAILED=1
+  else
+    echo "OK  $link -> ../../skills/$name"
+  fi
+done
+# And no orphan: a .codex/skills entry whose skill was renamed/removed dangles.
+for link in .codex/skills/*; do
+  if [ -L "$link" ] && [ ! -e "$link" ]; then
+    echo "::error::$link is a dangling .codex symlink (target '$(readlink "$link")' missing)"
+    FAILED=1
+  fi
+done
+
 exit $FAILED
