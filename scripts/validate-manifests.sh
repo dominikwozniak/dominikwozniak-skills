@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Validate every marketplace.json + plugin.json via Claude CLI, verify version sync between
 # marketplace.json[].version and each <source>/.claude-plugin/plugin.json.version, and check the
-# shipped scripts (canon in scripts/runtime/, symlinked into each plugin's scripts/ dir).
+# shipped scripts (canon in scripts/runtime/, symlinked into each consuming skill's scripts/ dir).
 set -uo pipefail
 
 FOUND=0
